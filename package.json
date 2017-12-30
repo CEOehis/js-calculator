@@ -1,0 +1,19 @@
+{
+  "name": "js-calculator",
+  "version": "1.0.0",
+  "description": "A simple javascript calculator",
+  "scripts": {
+    "start": "gulp"
+  },
+  "author": "Celestine Ekoh-Ordan",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.0.0",
+    "gulp-sass": "^3.1.0"
+  }
+}
