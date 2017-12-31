@@ -1,7 +1,3 @@
-// find a way to manage and track the calculator state
-// such that as the user types in the figures it updates for each keypress a "operand" variable
-// that will be operand 'a'. when the user presses an operation button it saves it ready to use for the operation
-// then monitors the rest key presses and for each key press updates the variable and does the operation
 "use strict"
 var screen = document.querySelector('.screen');
 
@@ -18,6 +14,13 @@ var operandOne;
 var operandTwo;
 var operator;
 
+function logger() {
+  console.log(`result: ${result}`);
+  console.log(`operandTemp: ${operandTemp}`);
+  console.log(`operandOne: ${operandOne}`);
+  console.log(`operandTwo: ${operandTwo} \noperator: ${operator}`)
+}
+
 figures = Array.from(figures);
 operators = Array.from(operators);
 
@@ -30,6 +33,7 @@ operators.forEach( function(operator) {
 });
 
 equalsButton.addEventListener('click', doCalc);
+// equalsButton.addEventListener('click', () => result = undefined);
 
 deleteButton.addEventListener('click', backspace);
 clearAllButton.addEventListener('click', clearAll);
@@ -38,14 +42,19 @@ clearScreenButton.addEventListener('click', clearScreen);
 function track() {
   // track updates the global temp variable for each operand and updates the screen appropriately
   if(result || screen.textContent == '0') screen.textContent = '';
+  if(operator) screen.textContent = '';
   operandTemp = screen.textContent += this.value;
 }
 
 function operate() {
   // when triggered , it sets the operand to the screen content and clears the screen
-  operandOne = screen.textContent;
+  if(operator) {
+    doCalc();
+    operator = this.value;
+    return;
+  }
+  operandOne = operandTemp;
   operandTemp = undefined;
-  screen.textContent = '';
   operator = this.value;
 }
 
@@ -59,31 +68,33 @@ function clearAll() {
 }
 
 function clearScreen() {
-  screen.textContent = '';
-  // operandTemp = undefined;
+  screen.textContent = '0';
 }
 
 function doCalc() {
   // operate on operand one and two based on value of current operand;
-  operandTemp = Number(operandTemp);
+  operandTwo = Number(screen.textContent);
+  operandTemp = undefined;
   operandOne = Number(operandOne);
+  if(result) operandOne = result;
+  [operandOne, operandTwo] = [operandTwo, operandOne];
   switch (operator) {
     case 'add':
-      result = operandTemp + operandOne
+      result = operandTwo + operandOne
       break;
     case 'subtract':
-      result = operandOne - operandTemp;
+      result = operandTwo - operandOne;
       break;
     case 'divide':
-      result = operandOne / operandTemp;
+      result = operandTwo / operandOne;
       break;
     case 'multiply':
-      result = operandOne * operandTemp;
+      result = operandTwo * operandOne;
       break;
     default:
       // statements_def
       break;
   }
-  // result = (operandTemp * operandOne);
+  operator = undefined;
   screen.textContent = result;
 }
