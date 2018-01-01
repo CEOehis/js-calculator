@@ -107,7 +107,9 @@ function doCalc() {
 }
 
 function backspace() {
+  if (screen.textContent == '0') return;
   screen.textContent = screen.textContent.substring(0, screen.textContent.length - 1);
+  if (screen.textContent == '') screen.textContent = '0';
 }
 
 function clearAll() {

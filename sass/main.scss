@@ -1,6 +1,17 @@
+body {
+  height: 100vh;
+}
+
+.app {
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 .calculator {
   background: #DFD8D0;
-  width: 300px;
+  min-width: 300px;
   margin: 0 auto;
   padding: 20px 10px;
   border-radius: 15px;
@@ -62,4 +73,9 @@
 
 .keypad .btn-danger {
   background: #990000;
+}
+
+.credits {
+  text-align: center;
+  font-family: sans-serif;
 }
