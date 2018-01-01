@@ -9,6 +9,7 @@ var clearScreenButton = document.querySelector('[value=clear-screen]');
 var clearAllButton = document.querySelector('[value=clear-all]');
 var deleteButton = document.querySelector('[value=backspace]');
 var plusMinus = document.querySelector('[value=plusOrMinus]');
+var decimal = document.querySelector('[value="."]');
 
 var result;
 var operandTemp;
@@ -41,6 +42,7 @@ deleteButton.addEventListener('click', backspace);
 clearAllButton.addEventListener('click', clearAll);
 clearScreenButton.addEventListener('click', clearScreen);
 plusMinus.addEventListener('click', setSign);
+decimal.addEventListener('click', addDecimal);
 
 // follow user input and track and update relevant states
 function track() {
@@ -48,6 +50,10 @@ function track() {
   if (result || screen.textContent == '0') screen.textContent = '';
   if (tracker) screen.textContent = '';
   tracker = false;
+  if (screen.textContent.length >= 9) {
+    alert('Maximum number of digits allowed reached');
+    return;
+  }
   operandTemp = screen.textContent += this.value;
 }
 
@@ -92,6 +98,10 @@ function doCalc() {
       break;
   }
   operator = undefined;
+  if (result > 999999999) {
+    alert('Screen bounds exceeded');
+    result = 0;
+  }
   screen.textContent = '' + result;
 }
 
@@ -112,8 +122,14 @@ function setSign() {
   if (!signed && screen.textContent != '0') {
     screen.textContent = '-' + screen.textContent;
     signed = true;
-  } else {
+  } else if (screen.textContent != '0') {
     screen.textContent = screen.textContent.slice(1);
     signed = false;
+  }
+}
+
+function addDecimal() {
+  if (screen.textContent.indexOf('.') === -1) {
+    screen.textContent += '.';
   }
 }
