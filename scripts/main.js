@@ -72,6 +72,7 @@ function operate() {
 
 function doCalc() {
   // operate on operand one and two based on value of current operand;
+  if(!operandTemp || !operandOne) return; // check if i have two inputs
   operandTwo = Number(screen.textContent);
   operandTemp = undefined;
   operandOne = Number(operandOne);
