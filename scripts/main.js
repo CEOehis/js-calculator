@@ -1,29 +1,27 @@
 "use strict"
-var screen = document.querySelector('.screen');
-
-var figures = document.querySelectorAll('.figures');
-var operators = document.querySelectorAll('.operators');
-
+// get all UI elements
+var screen = document.querySelector('.screen'); 
+var figures = document.querySelectorAll('.figures'); // nodelist of number buttons
+var operators = document.querySelectorAll('.operators'); // nodelist of operators
 var equalsButton = document.querySelector('.equals');
 var clearScreenButton = document.querySelector('[value=clear-screen]');
 var clearAllButton = document.querySelector('[value=clear-all]');
 var deleteButton = document.querySelector('[value=backspace]');
+var plusMinus = document.querySelector('[value=plusOrMinus]')
+
 var result;
 var operandTemp;
 var operandOne;
 var operandTwo;
 var operator;
+var tracker = false;
+var signed = false;
 
-function logger() {
-  console.log(`result: ${result}`);
-  console.log(`operandTemp: ${operandTemp}`);
-  console.log(`operandOne: ${operandOne}`);
-  console.log(`operandTwo: ${operandTwo} \noperator: ${operator}`)
-}
-
+// convert node list to array to enable array methods to be performed
 figures = Array.from(figures);
 operators = Array.from(operators);
 
+// add event listeners
 figures.forEach( function(button) {
   button.addEventListener('click', track);
 });
@@ -33,16 +31,22 @@ operators.forEach( function(operator) {
 });
 
 equalsButton.addEventListener('click', doCalc);
-// equalsButton.addEventListener('click', () => result = undefined);
+equalsButton.addEventListener('click', () => {
+  result = operandTemp = operandOne = operandTwo = operator  = undefined;
+  tracker = true;
+});
 
 deleteButton.addEventListener('click', backspace);
 clearAllButton.addEventListener('click', clearAll);
 clearScreenButton.addEventListener('click', clearScreen);
+plusMinus.addEventListener('click', setSign);
 
+// follow user input and track and update relevant states
 function track() {
   // track updates the global temp variable for each operand and updates the screen appropriately
   if(result || screen.textContent == '0') screen.textContent = '';
-  if(operator) screen.textContent = '';
+  if(tracker) screen.textContent = '';
+  tracker = false;
   operandTemp = screen.textContent += this.value;
 }
 
@@ -53,22 +57,10 @@ function operate() {
     operator = this.value;
     return;
   }
-  operandOne = operandTemp;
+  operandOne = screen.textContent;
   operandTemp = undefined;
   operator = this.value;
-}
-
-function backspace() {
-  screen.textContent = screen.textContent.substring(0,screen.textContent.length -1)
-}
-
-function clearAll() {
-  screen.textContent = '0';
-  result, operandTemp, operandOne, operandTwo, operator = undefined;
-}
-
-function clearScreen() {
-  screen.textContent = '0';
+  tracker = true;
 }
 
 function doCalc() {
@@ -96,5 +88,29 @@ function doCalc() {
       break;
   }
   operator = undefined;
-  screen.textContent = result;
+  screen.textContent = '' + result;
+}
+
+function backspace() {
+  screen.textContent = screen.textContent.substring(0,screen.textContent.length -1)
+}
+
+function clearAll() {
+  screen.textContent = '0';
+  result = operandTemp = operandOne = operandTwo = operator = undefined;
+}
+
+function clearScreen() {
+  screen.textContent = '0';
+}
+
+function setSign() {
+  if(!signed && screen.textContent != '0') {
+    screen.textContent = '-' + screen.textContent; 
+    signed = true;
+  }
+  else {
+    screen.textContent = screen.textContent.slice(1);
+    signed = false;
+  }
 }
