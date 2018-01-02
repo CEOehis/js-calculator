@@ -22,16 +22,6 @@ body {
   border-top: 1px solid #313131;
   border-left: 2px solid #313131;
   position: relative;
-  &:after {
-    content: '';
-    box-shadow: 5px 5px 10px #bfb8b1;
-    height: 100%;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    border-radius: 20px;
-  }
 }
 
 .screen {
